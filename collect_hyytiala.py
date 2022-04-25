@@ -4,6 +4,10 @@ script to collect all hyytiala data from Puhti
 
 """
 
+import os 
+import rasterio
+
+
 datadirs = ["/scratch/project_2005334/EODIE_process_akivimaki/2020","/scratch/project_2005334/EODIE_process_akivimaki/2021", "/scratch/project_2005334/EODIE_process_forest/EODIE_2021_results"]
 startdate = 20200401
 enddate = 20210930
