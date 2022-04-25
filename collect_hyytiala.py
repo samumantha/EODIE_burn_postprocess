@@ -18,7 +18,9 @@ datasets = ["B08","B8A","B11"]
 #list all data with needed metadata
 oklist = []
 for datadir in datadirs:
+    print(datadir)
     for afile in os.listdir(datadir):
+        print(afile)
         if afile.endswith('.tif'):
             print(afile)
             afilesplit = afile.split('_')
