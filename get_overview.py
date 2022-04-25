@@ -14,7 +14,8 @@ import rasterio
 nbrdir = '/u/58/wittkes3/unix/Documents/EODIE_complete_nbr/tifs'
 
 # all ids
-idlist = [1,2,269,2753,2854,190,214,213,130,131,132]
+#idlist = [1,2,269,2753,2854,190,214,213,130,131,132]
+idlist = [1]
 
 nbrcontent = os.listdir(nbrdir)
 
@@ -39,16 +40,17 @@ listtoremove = []
 listtokeep = []
 all = 0
 for file in nbrcontent:
-    all += 1
-    with rasterio.open(os.path.join(nbrdir,file)) as src:
-        srcarray = src.read(1)
-        unique = np.unique(srcarray)
-        # files with less than 3 different values are empty and can be removed
-        if len(unique) < 3:
-            filetoremove = os.path.join(nbrdir,file)
-            listtoremove.append(filetoremove)
-        else:
-            listtokeep.append(os.path.join(nbrdir,file))
+    if file.endswith('.tif'):
+        all += 1
+        with rasterio.open(os.path.join(nbrdir,file)) as src:
+            srcarray = src.read(1)
+            unique = np.unique(srcarray)
+            # files with less than 3 different values are empty and can be removed
+            if len(unique) < 3:
+                filetoremove = os.path.join(nbrdir,file)
+                listtoremove.append(filetoremove)
+            else:
+                listtokeep.append(os.path.join(nbrdir,file))
 """
 with open('tokeep.txt', 'w') as f:
     for file in listtokeep:
@@ -62,6 +64,9 @@ print(len(listtoremove))
 finalkeepers = []
 for file in listtokeep:
     id = file.split('_')[-1].split('.')[0]
+    if id == '1' and 'VFP' in file:
+        finalkeepers.append(file)
+    """
     if id != '2753' and id != '2854':
         if idtiledict[int(id)][0] in file:
             # Noora does not need the following, 131 and 132 overlap with 130 and 1 and 2 are evo and hyytiala, ie there was no burn
@@ -72,9 +77,10 @@ for file in listtokeep:
         if '35VLG' in file:
             finalkeepers.append(file)
             print(file)
+    """        
 print(len(finalkeepers))
 
-with open('finalkeepers.txt', 'w') as f:
+with open('finalkeepers_hyytiala.txt', 'w') as f:
     for file in finalkeepers:
         f.write("%s\n" % file)
 
