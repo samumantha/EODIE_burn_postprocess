@@ -19,18 +19,19 @@ datasets = ["B08","B8A","B11"]
 oklist = []
 for datadir in datadirs:
     for afile in os.listdir(datadir):
-        afilesplit = afile.split('_')
-        date = afilesplit[1]
-        filetile = afilesplit[2]
-        fileid = afilesplit[5]
-        filedataset = afilesplit[0]
-        if fileid == id:
-            for dataset in datasets:
-                if filedataset == dataset:
-                    if date > startdate and date < enddate:
-                        afilepath = os.path.join(datadir,afile)
-                        if not afilepath in oklist:
-                            oklist.append(afilepath)
+        if afile.endswith('.tif'):
+            afilesplit = afile.split('_')
+            date = afilesplit[1]
+            filetile = afilesplit[2]
+            fileid = afilesplit[5]
+            filedataset = afilesplit[0]
+            if fileid == id:
+                for dataset in datasets:
+                    if filedataset == dataset:
+                        if date > startdate and date < enddate:
+                            afilepath = os.path.join(datadir,afile)
+                            if not afilepath in oklist:
+                                oklist.append(afilepath)
 
 print(len(oklist))
 
