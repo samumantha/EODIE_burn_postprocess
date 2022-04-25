@@ -9,6 +9,7 @@ import rasterio
 import numpy as np
 
 
+
 datadirs = ["/scratch/project_2005334/EODIE_process_forest/EODIE_2021_results/tif"]
 startdate = 20200401
 enddate = 20210930
@@ -58,3 +59,8 @@ with open('finalkeepers_hyytiala_all.txt', 'w') as f:
     for yeafile in listtokeep:
         f.write("%s\n" % yeafile)
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b014734f6cf6451d3f897c2bd2db689b9133936b
