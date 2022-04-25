@@ -7,7 +7,7 @@ script to collect all hyytiala data from Puhti
 import os 
 import rasterio
 import numpy as np
-import boto3
+
 
 datadirs = ["/scratch/project_2005334/EODIE_process_forest/EODIE_2021_results/tif"]
 startdate = 20200401
@@ -58,10 +58,3 @@ with open('finalkeepers_hyytiala_all.txt', 'w') as f:
     for yeafile in listtokeep:
         f.write("%s\n" % yeafile)
 
-s3 = boto3.client("s3", endpoint_url='https://a3s.fi')
-for dataset in datasets:
-    for key in s3.list_objects_v2(Bucket='EODIE-Results/2020/tif/'+dataset)['Contents']:
-        if (key['Key'].endswith('.tif')):
-            
-            filePath = '/vsis3/EODIE-Results/2020/tif' + key['Key']
-        print(filePath)
