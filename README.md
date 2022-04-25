@@ -1,4 +1,4 @@
-# Repository for burnt area monitoring code
+# Postprocessing burnt area monitoring results from EODIE
 
 ## Process
 
