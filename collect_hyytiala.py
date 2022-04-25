@@ -8,7 +8,7 @@ import os
 import rasterio
 
 
-datadirs = ["/scratch/project_2005334/EODIE_process_akivimaki/Results/2020/tif","/scratch/project_2005334/EODIE_process_akivimaki/Results/2021/tif", "/scratch/project_2005334/EODIE_process_forest/EODIE_2021_results"]
+datadirs = ["/scratch/project_2005334/EODIE_process_akivimaki/Results/2020/tif","/scratch/project_2005334/EODIE_process_akivimaki/Results/2021/tif", "/scratch/project_2005334/EODIE_process_forest/EODIE_2021_results/tif"]
 startdate = 20200401
 enddate = 20210930
 tile = '34VFN'
@@ -56,3 +56,6 @@ print(len(listtokeep))
 with open('finalkeepers_hyytiala_all.txt', 'w') as f:
     for yeafile in listtokeep:
         f.write("%s\n" % yeafile)
+
+
+
