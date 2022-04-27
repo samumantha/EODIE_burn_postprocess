@@ -12,7 +12,7 @@ import os
 import glob
 
 #fulldir = '/u/58/wittkes3/unix/Documents/EODIE_complete_nbr/tifs/prepped'
-fulldir = '/u/58/wittkes3/unix/Documents/UEF_burnt_area/prepost_tifs_nd'
+fulldir = '/u/58/wittkes3/unix/Documents/UEF_burnt_area/prepost_tifs_nd_fixed'
 
 idlist = [269,2854,190,214,130]
 
@@ -22,7 +22,7 @@ idlist = [269,2854,190,214,130]
 for mf in glob.glob(fulldir + '/*'):
     print(mf)
     #id = mf.split('_')[-1].split('.')[0]
-    id = mf.split('_')[-2]
+    id = mf.split('_')[-3]
     name = os.path.split(mf)[-1]
     date = name.split('_')[1]
     print(date)
@@ -30,7 +30,7 @@ for mf in glob.glob(fulldir + '/*'):
         srcarray = src.read(1)
 
 
-    with h5py.File('burnt_area_clipped_nd.h5', 'a') as hf:
+    with h5py.File('burnt_area_clipped_nd_fixed.h5', 'a') as hf:
         print(list(hf.keys()))
         if not str(id) in hf.keys():
             print('a')
