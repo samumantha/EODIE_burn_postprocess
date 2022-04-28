@@ -25,3 +25,20 @@ input: directory with prepped and merged geotiffs
 output: one hdf file with id as groups and dates as dataset names, dataset is array
 
 read_hdf.py to test read the created hdf
+
+
+--- 
+
+> gdalwarp -cutline xx.shp -of GTiff -tap -tr 10 10 -crop_to_cutline -dstnodata -99999 in.tif out.tif
+
+---
+
+rasterio_testi.py: check two rasterfiles shape, transform and crs
+
+---
+
+collect_hyytiala.py:
+
+---
+
+collect_hyytiala_allas.py: not used, as boto cannot list all objects

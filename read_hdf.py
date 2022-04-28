@@ -33,7 +33,7 @@ def get_closest(prepostdates, keydatedict):
         predate = datetime.datetime.strptime(predatestring,"%Y%m%d").date()
         postdate = datetime.datetime.strptime(postdatestring,"%Y%m%d").date()
         avdates = keydatedict[id]
-        print(avdates)
+        #print(avdates)
         precurdelta = 100
         postcurdelta = 100
         for avdate in avdates:
@@ -45,9 +45,9 @@ def get_closest(prepostdates, keydatedict):
             # if pre burndate
             predeltadays = np.abs(predeltadays)
 
-            print(predate)
-            print(avdate)
-            print(predeltadays) 
+            #print(predate)
+            #print(avdate)
+            #print(predeltadays) 
                  
             if predeltadays < precurdelta:                       
                 precurdelta = predeltadays
@@ -61,9 +61,9 @@ def get_closest(prepostdates, keydatedict):
             # if post burndate
             postdeltadays = np.abs(postdeltadays)
 
-            print(postdate)
-            print(avdate)
-            print(postdeltadays) 
+            #print(postdate)
+            #print(avdate)
+            #print(postdeltadays) 
             
             if postdeltadays < postcurdelta:
                 postcurdelta = postdeltadays
@@ -88,7 +88,7 @@ def get_closest(prepostdates, keydatedict):
 #only non cloudy dates
 keydatedict = {'130': ['20210512', '20210513', '20210518', '20210520', '20210523', '20210528', '20210530', '20210601', '20210602', '20210604', '20210606', '20210607', '20210609', '20210611', '20210617', '20210621', '20210627', '20210629', '20210701', '20210702', '20210704', '20210707', '20210712', '20210714', '20210716', '20210717', '20210726', '20210806', '20210810', '20210813', '20210821', '20210909', '20210927', '20211014', '20211019'], '190': ['20210512', '20210517', '20210519', '20210601', '20210606', '20210608', '20210611', '20210613', '20210623', '20210626', '20210703', '20210706', '20210716', '20210726', '20210802', '20210807', '20210815', '20210906', '20211004', '20211019', '20211024'], '214': ['20210512', '20210525', '20210530', '20210604', '20210606', '20210609', '20210611', '20210619', '20210626', '20210629', '20210704', '20210714', '20210716', '20210726', '20210813', '20210828', '20210927', '20211019', '20211029'], '269': ['20210204', '20210206', '20210209', '20210211', '20210214', '20210326', '20210331', '20210412', '20210415', '20210417', '20210430', '20210512', '20210527', '20210530', '20210606', '20210611', '20210619', '20210621', '20210626', '20210701', '20210704', '20210714', '20210716', '20210724', '20210726', '20210810', '20210813', '20210902', '20210927', '20211017', '20211019'], '2854': ['20210512', '20210524', '20210529', '20210530', '20210604', '20210611', '20210616', '20210618', '20210619', '20210621', '20210701', '20210703', '20210704', '20210711', '20210714', '20210716', '20210718', '20210721', '20210726', '20210731', '20210808', '20210810', '20210813', '20210902', '20210904', '20210916', '20210926', '20211006', '20211024']}
 
-#get_closest(prepostdates,keydatedict)
+get_closest(prepostdates,keydatedict)
 
 names = {
     '130': 'Seitseminen',
@@ -252,3 +252,35 @@ with h5py.File('burnt_area_clipped_nd_fixed.h5', 'r') as hdf:
 
 
 
+"""
+closest
+130
+1
+2021-06-18
+5
+2021-09-04
+closest
+2854
+0
+2021-06-04
+3
+2021-06-28
+closest
+269
+3
+2021-06-14
+1
+2021-09-03
+closest
+190
+0
+2021-06-08
+1
+2021-09-07
+closest
+214
+0
+2021-06-11
+9
+2021-09-06
+"""
