@@ -18,8 +18,8 @@ import os
 
 iddict = {'214':'PyhaHakki','269':'Pernunmaki','190':'Ahveninen', '2854':'Ruoholampi','130':'Seitseminen'}
 shpdir = '/u/58/wittkes3/unix/Documents/UEF_burnt_area/prepost'
-outdir = '/u/58/wittkes3/unix/Documents/UEF_burnt_area/prepost_tifs_nd'
-indir = '/u/58/wittkes3/unix/Documents/EODIE_complete_nbr/tifs/prepped'
+outdir = '/u/58/wittkes3/unix/Documents/UEF_burnt_area/prepost_tifs_nd_fixed'
+indir = '/u/58/wittkes3/unix/Documents/EODIE_complete_nbr/tifs/prepped_fixed'
 
 
 for file in glob.glob(indir+'/*'):
@@ -34,7 +34,7 @@ for file in glob.glob(indir+'/*'):
     shpname = glob.glob(shpdir + '/*' + name +'*.shp')[0]
     data = geopandas.read_file(shpname)
     data = data.to_crs(epsg=epsgc)
-    newname = shpname.split('.')[0]+ 'repr_32635'+ shpname.split('.')[-1]
+    newname = shpname.split('.')[0]+ 'repr_32635_'+ shpname.split('.')[-1]
     data.to_file(newname)
     with fiona.open(newname, "r") as shapefile:
         shapes = [feature["geometry"] for feature in shapefile]
@@ -46,7 +46,7 @@ for file in glob.glob(indir+'/*'):
                  "height": out_image.shape[1],
                  "width": out_image.shape[2],
                  "transform": out_transform})
-    newname = os.path.join(outdir, file.split('/')[-1].split('.')[0] + '_prepost.' + file.split('.')[-1])
+    newname = os.path.join(outdir, file.split('/')[-1].split('.')[0] + '_prepost_fixed.' + file.split('.')[-1])
     with rasterio.open(newname, "w", **out_meta) as dest:
         dest.write(out_image)
 
