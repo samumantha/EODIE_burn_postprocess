@@ -11,11 +11,13 @@ import numpy as np
 import rasterio
 
 # this includes fully cloudcovered files 
-nbrdir = '/u/58/wittkes3/unix/Documents/EODIE_complete_nbr/tifs'
+#nbrdir = '/u/58/wittkes3/unix/Documents/EODIE_complete_nbr/tifs'
+nbrdir = '/u/58/wittkes3/unix/Documents/UEF_burnt_area/prepost_tifs_nd_fixed'
 
 # all ids
 #idlist = [1,2,269,2753,2854,190,214,213,130,131,132]
-idlist = [1]
+idlist = [269,2854,190,214,130]
+#idlist = [1]
 
 nbrcontent = os.listdir(nbrdir)
 
@@ -25,7 +27,8 @@ idtiledict = {}
 for id in idlist:
     tilelist =[]
     for file in nbrcontent:
-        fileid = file.split('_')[-1].split('.')[0]
+        #fileid = file.split('_')[-1].split('.')[0]
+        fileid = file.split('_')[-3]
         if str(id) == fileid:
             tile = file.split('_')[2]
             if not tile in tilelist:
@@ -64,9 +67,11 @@ print(len(listtoremove))
 finalkeepers = []
 for file in listtokeep:
     id = file.split('_')[-1].split('.')[0]
-    if id == '1' and 'VFP' in file:
-        finalkeepers.append(file)
-    """
+    id = file.split('_')[-3]
+    
+    #if id == '1' and 'VFP' in file:
+    #    finalkeepers.append(file)
+    
     if id != '2753' and id != '2854':
         if idtiledict[int(id)][0] in file:
             # Noora does not need the following, 131 and 132 overlap with 130 and 1 and 2 are evo and hyytiala, ie there was no burn
@@ -77,10 +82,10 @@ for file in listtokeep:
         if '35VLG' in file:
             finalkeepers.append(file)
             print(file)
-    """        
+            
 print(len(finalkeepers))
 
-with open('finalkeepers_hyytiala.txt', 'w') as f:
+with open('finalkeepers_merged.txt', 'w') as f:
     for file in finalkeepers:
         f.write("%s\n" % file)
 

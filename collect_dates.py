@@ -2,16 +2,16 @@ import os
 import rasterio
 import numpy as np
 import matplotlib.pyplot as plt
-import fiona
+#import fiona
 import rasterio.mask
 
-
+"""
 with fiona.open("full_cloud_400m_clipped_32635.shp", "r") as shapefile:
     shapes = [feature["geometry"] for feature in shapefile]
+"""
 
 
-
-with open('finalkeepers_hyytiala_20_21_35VLJ_all.txt') as f:
+with open('finalkeepers_merged.txt') as f:
     alist = f.readlines()
 
 
@@ -19,14 +19,15 @@ dates = []
 iddates = {}
 for afile in alist:
     filename = os.path.split(afile)[-1]
-    id = filename.split('_')[-1].split('.')[0]
+    #id = filename.split('_')[-1].split('.')[0]
+    id = filename.split('_')[-3]
     date = filename.split('_')[1]
     thetype = filename.split('_')[0]
     # space in the end needs to be stripped
     with rasterio.open(afile.strip()) as af:
         ar = af.read(1)
         if np.count_nonzero(ar[ar==99999]) == 0:
-
+            """
             out_image, out_transform = rasterio.mask.mask(af, shapes, crop=True)
             out_meta = af.meta
             out_meta.update({"driver": "GTiff",
@@ -36,17 +37,31 @@ for afile in alist:
 
             with rasterio.open(filename.split('.')[0]+'_400mcloud.tif', "w", **out_meta) as dest:
                 dest.write(out_image)
+            """
 
 
 
             ar[(ar < -1) | (ar > 1)] = np.nan
             print(np.nanmin(ar))
             print(np.nanmax(ar))
-            plt.imshow(ar)
-            plt.colorbar()
-            plt.savefig(thetype + '_' + date + '.png')
+            """
+            HIST_BINS = np.linspace(-0.2, 1, 100)
+            plt.hist(ar.flatten(), bins=HIST_BINS)
+            plt.ylim([0,30])
+            plt.xlim([-0.2,1])
+            plt.title(id + '_' +thetype + '_' + date)
+            plt.savefig(id + '_' +thetype + '_' + date + '_histogram.png')
+            #plt.show()
             plt.clf()
 
+            """
+            plt.imshow(ar)
+            plt.colorbar()
+            plt.clim(-0.3,1)
+            plt.title(id + '_' +thetype + '_' + date)
+            plt.savefig(id + '_' +thetype + '_' + date + '.png')
+            plt.clf()
+            
             #keep the date otherwise not
             if not id in iddates.keys():
                 iddates[id] =[date]

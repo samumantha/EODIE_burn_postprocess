@@ -88,7 +88,7 @@ def get_closest(prepostdates, keydatedict):
 #only non cloudy dates
 keydatedict = {'130': ['20210512', '20210513', '20210518', '20210520', '20210523', '20210528', '20210530', '20210601', '20210602', '20210604', '20210606', '20210607', '20210609', '20210611', '20210617', '20210621', '20210627', '20210629', '20210701', '20210702', '20210704', '20210707', '20210712', '20210714', '20210716', '20210717', '20210726', '20210806', '20210810', '20210813', '20210821', '20210909', '20210927', '20211014', '20211019'], '190': ['20210512', '20210517', '20210519', '20210601', '20210606', '20210608', '20210611', '20210613', '20210623', '20210626', '20210703', '20210706', '20210716', '20210726', '20210802', '20210807', '20210815', '20210906', '20211004', '20211019', '20211024'], '214': ['20210512', '20210525', '20210530', '20210604', '20210606', '20210609', '20210611', '20210619', '20210626', '20210629', '20210704', '20210714', '20210716', '20210726', '20210813', '20210828', '20210927', '20211019', '20211029'], '269': ['20210204', '20210206', '20210209', '20210211', '20210214', '20210326', '20210331', '20210412', '20210415', '20210417', '20210430', '20210512', '20210527', '20210530', '20210606', '20210611', '20210619', '20210621', '20210626', '20210701', '20210704', '20210714', '20210716', '20210724', '20210726', '20210810', '20210813', '20210902', '20210927', '20211017', '20211019'], '2854': ['20210512', '20210524', '20210529', '20210530', '20210604', '20210611', '20210616', '20210618', '20210619', '20210621', '20210701', '20210703', '20210704', '20210711', '20210714', '20210716', '20210718', '20210721', '20210726', '20210731', '20210808', '20210810', '20210813', '20210902', '20210904', '20210916', '20210926', '20211006', '20211024']}
 
-get_closest(prepostdates,keydatedict)
+#get_closest(prepostdates,keydatedict)
 
 names = {
     '130': 'Seitseminen',
@@ -134,7 +134,7 @@ with h5py.File('burnt_area_clipped_nd_fixed.h5', 'r') as hdf:
                  
                 #print(np.count_nonzero(df[df==99999]))
                 if np.count_nonzero(df[df==99999]) == 0: 
-                    
+                    """
                     #print(preposts2dates)
                     preTLS = rp[preposts2tlsdates[a][0]]
                     postTLS = rp[preposts2tlsdates[a][1]]
@@ -147,11 +147,12 @@ with h5py.File('burnt_area_clipped_nd_fixed.h5', 'r') as hdf:
 
                     rdnbrtls = np.divide(dnbrtls,np.sqrt(np.abs(preTLS)))
                     rdnbrs2 = np.divide(dnbrs2,np.sqrt(np.abs(pres2)))
+                    """
 
                     df[(df < -1) | (df > 1)] = np.nan
                     datekey = datetime.datetime.strptime(key,"%Y%m%d").date() 
                     datekey2 = mpl.dates.date2num(datekey)
-                    median = np.nanmedian(df)
+                    median = np.nanmedian(df)#np.nanpercentile(df, 75)
                     
                     if datekey > datetime.datetime.strptime('20210501',"%Y%m%d").date() and datekey < datetime.datetime.strptime(burndates[a],"%Y%m%d").date():
                         preburn.append(median)
@@ -162,7 +163,7 @@ with h5py.File('burnt_area_clipped_nd_fixed.h5', 'r') as hdf:
                     df[(df < -1) | (df > 1)] = np.nan
                     datekey = datetime.datetime.strptime(key,"%Y%m%d").date() 
                     datekey2 = mpl.dates.date2num(datekey)
-                    median = np.nanmedian(df)
+                    median = np.nanmedian(df)#np.nanpercentile(df, 75)
                     oneidnotallpixels[datekey] = median
         """
         #print(dnbrs2)
@@ -197,26 +198,27 @@ with h5py.File('burnt_area_clipped_nd_fixed.h5', 'r') as hdf:
         plt.savefig('rdnbr_tls_id_'+ a+ '.png')
         plt.show()
         plt.clf()
+        
         """
-
         #print(oneidmedians)
 
-        preburnmedian = np.nanmedian(np.array(preburn))
-        postburnmedian = np.nanmedian(np.array(postburn))
+        preburnmedian = np.nanmedian(np.array(preburn))#np.nanpercentile(np.array(preburn),75)
+        postburnmedian = np.nanmedian(np.array(postburn))#np.nanpercentile(np.array(postburn),75)
 
 
-        print(np.median(dnbrs2))
-        print(np.median(rdnbrs2))
+        #print(np.median(dnbrs2))
+        #print(np.median(rdnbrs2))
+        
         #print(preburnmedian)
         #print(postburnmedian)
         #dnbr = np.subtract(preburnmedian,postburnmedian)
         #print(dnbr)
         #print((dnbr/np.sqrt(np.abs(preburnmedian))))
-        """
+        
         #print(*sorted(oneidmedians.items()))
         #print(*sorted(oneidmedians.items()))
-        plt.plot(*zip(*sorted(oneidmedians.items())), 'om', label= 'median NBR')
-        plt.plot(*zip(*sorted(oneidnotallpixels.items())), 'ok', label= 'median NBR, cloudcovered')
+        plt.plot(*zip(*sorted(oneidmedians.items())), 'om', label= 'median NBR') #'median NBR')
+        plt.plot(*zip(*sorted(oneidnotallpixels.items())), 'ok', label= 'median NBR, cloudcovered')#'median NBR, cloudcovered')
 
         #x_new = np.linspace(18748, 18885, 300)
 
@@ -234,8 +236,11 @@ with h5py.File('burnt_area_clipped_nd_fixed.h5', 'r') as hdf:
         burnnumber = mpl.dates.date2num(datetime.datetime.strptime(burndates[a],"%Y%m%d").date())
         plt.axhline(y= preburnmedian, color = 'tab:blue', label= 'pre-burn median', linestyle= 'dotted')
         plt.axhline(y= postburnmedian, color= 'tab:olive', label = 'post-burn median', linestyle = 'dotted')
+        
+        #plt.axhline(y= preburnmedian, color = 'tab:blue', label= 'pre-burn median', linestyle= 'dotted')
+        #plt.axhline(y= postburnmedian, color= 'tab:olive', label = 'post-burn median', linestyle = 'dotted')
         plt.gca().set_xbound(datetime.date(2021, 5, 1), datetime.date(2021, 9, 30))
-        plt.gca().set_ybound(-0.2,1)
+        plt.gca().set_ybound(-1,1)
         #locs, labels = plt.xticks()
         #print(locs)
         
@@ -245,10 +250,10 @@ with h5py.File('burnt_area_clipped_nd_fixed.h5', 'r') as hdf:
         plt.tight_layout()
         plt.legend()
 
-        plt.savefig("timeseries_id" + a + '.png')
+        plt.savefig("timeseries_median_id" + a + '.png')
         plt.show()
         plt.clf()
-        """
+        
 
 
 
