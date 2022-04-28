@@ -1,8 +1,17 @@
 import os
+import rasterio
+import numpy as np
+import matplotlib.pyplot as plt
+import fiona
+import rasterio.mask
+
+
+with fiona.open("full_cloud_400m_clipped_32635.shp", "r") as shapefile:
+    shapes = [feature["geometry"] for feature in shapefile]
 
 
 
-with open('finalkeepers.txt') as f:
+with open('finalkeepers_hyytiala_20_21_35VLJ_all.txt') as f:
     alist = f.readlines()
 
 
@@ -12,10 +21,37 @@ for afile in alist:
     filename = os.path.split(afile)[-1]
     id = filename.split('_')[-1].split('.')[0]
     date = filename.split('_')[1]
-    if not id in iddates.keys():
-        iddates[id] =[date]
-    if not date in iddates[id]:
-        iddates[id].append(date)
+    thetype = filename.split('_')[0]
+    # space in the end needs to be stripped
+    with rasterio.open(afile.strip()) as af:
+        ar = af.read(1)
+        if np.count_nonzero(ar[ar==99999]) == 0:
+
+            out_image, out_transform = rasterio.mask.mask(af, shapes, crop=True)
+            out_meta = af.meta
+            out_meta.update({"driver": "GTiff",
+                    "height": out_image.shape[1],
+                    "width": out_image.shape[2],
+                    "transform": out_transform})
+
+            with rasterio.open(filename.split('.')[0]+'_400mcloud.tif', "w", **out_meta) as dest:
+                dest.write(out_image)
+
+
+
+            ar[(ar < -1) | (ar > 1)] = np.nan
+            print(np.nanmin(ar))
+            print(np.nanmax(ar))
+            plt.imshow(ar)
+            plt.colorbar()
+            plt.savefig(thetype + '_' + date + '.png')
+            plt.clf()
+
+            #keep the date otherwise not
+            if not id in iddates.keys():
+                iddates[id] =[date]
+            if not date in iddates[id]:
+                iddates[id].append(date)
 
 print(iddates)
 for key in iddates.keys():
@@ -23,17 +59,15 @@ for key in iddates.keys():
 
 print(iddates)
 
-datedict['130'] = [20210601,20210801]
-datedict['2854'] = []
 
-
+"""
 def check_monthly(id, date1, date2):
     monthlydict = {}
     for date in iddates['130']:
         if int(date) > 20210601 and int(date) < 20210801:
             if not '130'
             monthlydict['130'].append(date)
-  
+"""
 
 #1:
 #dates= ['20200405', '20200407', '20200410', '20200422', '20200430', '20200502', '20200505', '20200507', '20200512', '20200517', '20200522', '20200525', '20200530', '20200601', '20200604', '20200609', '20200611', '20200614', '20200616', '20200619', '20200621', '20200624', '20200626', '20200706', '20200709', '20200714', '20200716', '20200726', '20200731', '20200805', '20200808', '20200810', '20200813', '20200818', '20200820', '20200823', '20200825', '20200828', '20200902', '20200907', '20200914', '20200919', '20200927', '20201002', '20201118', '20210420', '20210512', '20210601', '20210606', '20210619', '20210704', '20210709', '20210726', '20210731', '20210810', '20210825', '20210828', '20210904', '20210909', '20210919', '20210927']

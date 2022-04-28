@@ -41,4 +41,15 @@ collect_hyytiala.py:
 
 ---
 
-collect_hyytiala_allas.py: not used, as boto cannot list all objects
+collect_hyytiala_allas.py: not used, as boto cannot list all objects; instead:
+s3cmd get s3://EODIE-Results/2020/tif/ -r --include "*B11*id_1.tif" --exclude "*" . (add -n for dryrun)
+
+---
+
+Hyytiala: 
+
+collect_dates.py -> collect dates with no cloudcover; clip to polygon
+
+plot.py -> plot 
+
+gif.py -> copy and run commands from commandline

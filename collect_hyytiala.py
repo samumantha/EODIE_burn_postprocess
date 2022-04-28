@@ -10,7 +10,8 @@ import numpy as np
 
 
 
-datadirs = ["/scratch/project_2005334/EODIE_process_forest/EODIE_2021_results/tif", "/scratch/project_2005334/hyytiala/2020/B8A", "/scratch/project_2005334/hyytiala/2020/B08", "/scratch/project_2005334/hyytiala/2020/ndvi", "/scratch/project_2005334/hyytiala/2020/kndvi" ]
+#datadirs= 
+datadirs = ["/scratch/project_2005334/EODIE_process_forest/EODIE_2021_results/tif", "/scratch/project_2005334/hyytiala/2020/B8A","/scratch/project_2005334/hyytiala/2020/B11", "/scratch/project_2005334/hyytiala/2020/B08", "/scratch/project_2005334/hyytiala/2020/ndvi", "/scratch/project_2005334/hyytiala/2020/kndvi" ]
 startdate = 20200401
 enddate = 20210930
 tile = '35VLJ'
@@ -56,7 +57,7 @@ for okfile in oklist:
 
 print(len(listtokeep))
 
-with open('finalkeepers_hyytiala_20_21_35VLJ.txt', 'w') as f:
+with open('finalkeepers_hyytiala_20_21_35VLJ_all.txt', 'w') as f:
     for yeafile in listtokeep:
         f.write("%s\n" % yeafile)
 
